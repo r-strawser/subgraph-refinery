@@ -1,0 +1,23 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+features:
+  - fullTextSearch
+dataSources:
+  - kind: near
+    name: Mrbrownproject
+    network: near-mainnet
+    source:
+      account: "mrbrownproject.near"
+      startBlock: 58968800
+    mapping:
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - FunctionCallLog
+        - TransferCallLog
+        - DeployContractLog
+        - TotalsLog
+      receiptHandlers:
+        - handler: handleReceipt
+      file: ./src/mapping.ts

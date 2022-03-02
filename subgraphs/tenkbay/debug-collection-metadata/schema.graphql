@@ -1,0 +1,55 @@
+type _Schema_
+  @fulltext(
+    name: "functionSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "FunctionCallLog", fields: [{ name: "methodName" }, { name: "id" }] }]
+  )
+
+  @fulltext(
+    name: "transferSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "TransferCallLog", fields: [{ name: "id" }] }]
+  )
+
+type FunctionCallLog @entity {
+  id: ID! # receipt_id
+  methodName: String
+  args: String
+  deposit: String
+  blockHash: String
+  outcomeLogs: String
+}
+
+type TransferCallLog @entity {
+  id: ID! # receipt_id
+  deposit: String
+  blockHash: String
+  outcomeLogs: String
+}
+
+type DeployContractLog @entity {
+  id: ID! # receipt_id
+  codeHash: String
+  blockHash: String
+  outcomeLogs: String
+}
+
+type TotalsLog @entity {
+  id: ID!
+  total_addToWhitelistCalls: BigInt!
+  total_createLinkdropCalls: BigInt!
+  total_claimsCalls: BigInt!
+  total_createAccountAndClaimCalls: BigInt!
+  total_linkCallbackCalls: BigInt!
+  total_nftTransferCalls: BigInt!
+  total_nftTransferCallCalls: BigInt!
+  total_nftResolveTranser: BigInt!
+  total_nftMintCalls: BigInt!
+  total_nftMintOneCalls: BigInt!
+  total_nftMintManyCalls: BigInt!
+  # total_nftApproveCalls: BigInt
+  # total_nftRevokeCalls: BigInt
+  # total_nftRevokeAllCalls: BigInt
+}
