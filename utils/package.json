@@ -1,0 +1,16 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "description": "tooling for debugging nft collections for subgraphs on NEAR",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ryan Strawser",
+  "license": "ISC",
+  "dependencies": {
+    "near-api-js": "^0.44.2",
+    "near-contract-parser": "^0.1.4"
+  }
+}
