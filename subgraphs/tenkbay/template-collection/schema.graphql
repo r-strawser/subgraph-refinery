@@ -1,0 +1,109 @@
+type _Schema_
+  @fulltext(
+    name: "nftSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "Token", fields: [{ name: "ownerId" }, { name: "mintedBy" }, { name: "tokenId" }] }]
+  )
+
+type Account @entity {
+  id: ID!
+  signerId: String!
+  nfts: [Token!]!
+  tokens: [Token!]! @derivedFrom(field: "owner")
+  sent: [Transfer!]! @derivedFrom(field: "from")
+  received: [Transfer!]! @derivedFrom(field: "to")
+  total_owned: BigInt!
+  total_transferred: BigInt!
+  last_updated: String!
+  # forSale: [Sale!]! @derivedFrom(field: "owner")
+
+}
+
+type Token @entity {
+  id: ID!
+  standard: String!
+  version: String!
+  event: String!
+  owner: Account!
+  ownerId: String
+  tokenId: String
+  metadata: String
+  image: String
+
+  total_transfers: BigInt!
+  transfers: [Transfer!]! @derivedFrom(field: "nft")
+  mints: [Mint!]! @derivedFrom(field: "nft")
+
+  # mint
+  mintedBy: String!
+  original_minter: Contract!
+  minted_timestamp: String!
+  minted_blockHeight: String!
+
+  total_mints: BigInt!
+
+  # sale
+  # saleBy: String!
+
+  # contract
+  # totalSupply: BigInt
+  contract: Contract!
+}
+
+
+type Contract @entity {
+  id: ID! # contract_id of nft collection
+  name: String!
+  symbol: String!
+  base_uri: String!
+  media_uri: String!
+  nfts: [Token!]! @derivedFrom(field: "contract")
+
+  size: String!
+  total_minted: BigInt!
+  og_minters: [Token!]! @derivedFrom(field: "original_minter")
+  original_minters: [Mint!]! @derivedFrom(field: "contract")
+}
+
+
+type Transfer @entity {
+  id: ID!
+  standard: String!
+  version: String!
+  event: String!
+  from: Account!
+  to: Account!
+  old_ownerId: String # from
+  new_ownerId: String # to
+  tokenId: String
+  authorizedId: String
+  nft: Token!
+  idx: String!
+  timestamp: String!
+}
+
+
+type Mint @entity {
+  id: ID!
+  # standard: String!
+  # version: String!
+  # event: String!
+  tokenId: String!
+  ownerId: String
+  owner: Account!
+
+  total_mints: BigInt!
+  contract: Contract!
+
+  nft: Token!
+  idx: String!
+  timestamp: String!
+  blockHash: String
+  blockHeight: String!
+}
+
+
+
+
+
