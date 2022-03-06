@@ -297,9 +297,6 @@ function handleAction(
         }
         transfer.save()
       }
-
-      //accounts.nfts.push(transfer.id);
-      //accounts.save();
       
   } else {
     log.info("Not processed - FunctionCall is: {}", [functionCall.methodName]);

@@ -4,9 +4,9 @@ const homedir = require("os").homedir();
 
 const CREDENTIALS_DIR = ".near-credentials";
 // block hash of query start (oldest block)
-const START_BLOCK_HASH = "8ZJdL5HDHc3MT2huq7WmW4wbwtjbzmSATmeNB6mH4iET"/*"91qswtoVPTzyuEH8xFSa4yASJHsSzN25tT8BrRtRqeHq"*/;
+const START_BLOCK_HASH = "6xNx43qTzmheXQiMmaZsa33BrmG41xjgmngnxGmve9cz"/*"91qswtoVPTzyuEH8xFSa4yASJHsSzN25tT8BrRtRqeHq"*/;
 // block hash of query end (newest block)
-const END_BLOCK_HASH = "7ZpMz4S85Ai6zHNvL1nLnamWfmdbzHLyVnMMaUYVPvoq"/*"Az9YXjRgA475CAVzEJwovZgkY5nxTfVrNdqP6mMS3XnF"*/;
+const END_BLOCK_HASH = "2cn2es3Xcjk4uHFW2RS1972Mz3YabB7oUrsEchb7cLGw"/*"Az9YXjRgA475CAVzEJwovZgkY5nxTfVrNdqP6mMS3XnF"*/;
 // contract ID or account ID you want to find transactions details for
 const CONTRACT_ID = "tenk.sputnik-dao.near";
 
