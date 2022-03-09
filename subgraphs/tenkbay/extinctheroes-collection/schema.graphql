@@ -1,0 +1,177 @@
+type _Schema_
+  @fulltext(
+    name: "nftSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "Token", fields: [{ name: "ownerId" }, { name: "mintedBy" }, { name: "tokenId" }, { name: "prev_ownerId" }] }]
+  )
+  @fulltext(
+    name: "transferSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "Transfer", fields: [{ name: "id" }, { name: "is_marketSale" }] }]
+  )
+
+type Account @entity {
+  id: ID!
+  signerId: String!
+  tokens: [Token!]! @derivedFrom(field: "owner")
+  sent: [Transfer!]! @derivedFrom(field: "from")
+  received: [Transfer!]! @derivedFrom(field: "to")
+  royalties: [Royalty!]! @derivedFrom(field: "addresses")
+
+  total_owned: BigInt!
+  total_transferred: BigInt!
+  last_updated: String!
+  # forSale: [Sale!]! @derivedFrom(field: "owner")
+  
+  total_royalties_received: BigInt!
+
+}
+
+type Token @entity {
+  id: ID!
+  standard: String!
+  version: String!
+  event: String!
+  owner: Account!
+  ownerId: String
+  prev_ownerId: String
+  tokenId: String
+  metadata: String
+  image: String
+
+  total_transfers: BigInt!
+  transfers: [Transfer!]! @derivedFrom(field: "nft")
+  mints: [Mint!]! @derivedFrom(field: "nft")
+  sales: [Royalty!]! @derivedFrom(field: "nft")
+
+  # mint
+  mintedBy: String!
+  original_minter: Contract!
+  minted_timestamp: String!
+  minted_blockHeight: String!
+
+  total_mints: BigInt!
+  prev_sale_price: BigInt
+
+  # royalties: [Account!]
+  # royalties_percentage: Int
+
+  # royalty distributions
+  # owner_share: Int # 92%
+  # creator_share: Int # 8%
+  # prev_owner_sale: Int
+
+  # sale
+  # saleBy: String!
+
+  # contract
+  # totalSupply: BigInt
+  contract: Contract!
+}
+
+
+type Contract @entity {
+  id: ID! # contract_id of nft collection
+  name: String!
+  symbol: String!
+  base_uri: String!
+  media_uri: String!
+  nfts: [Token!]! @derivedFrom(field: "contract")
+
+  copies: String!
+  total_minted: BigInt!
+  original_minters: [Mint!]! @derivedFrom(field: "contract")
+}
+
+
+type Transfer @entity {
+  id: ID!
+  standard: String!
+  version: String!
+  event: String!
+  from: Account!
+  to: Account!
+  old_ownerId: String # from
+  new_ownerId: String # to
+  tokenId: String
+  authorizedId: String
+  nft: Token!
+  idx: String!
+  timestamp: String!
+
+  is_marketSale: String!
+}
+
+
+type Mint @entity {
+  id: ID!
+  # standard: String!
+  # version: String!
+  # event: String!
+  tokenId: String!
+  ownerId: String
+  owner: Account!
+
+  total_mints: BigInt!
+  contract: Contract!
+
+  nft: Token!
+  idx: String!
+  timestamp: String!
+  blockHash: String
+  blockHeight: String
+}
+
+type Royalty @entity {
+  id: ID!
+  tokenId: String
+  
+  nft: Token!
+  owner_share: Int # 92%
+  contributor_share: Int # 8%
+
+  sale_price: BigInt!
+
+  addresses: [Account!]!
+  payout_addresses: [String!]!
+  payout_amounts: [String!]!
+
+  timestamp: String!
+  blockHash: String
+  blockHeight: String
+  idx: String!
+  associated_transfer: Transfer!
+
+  buyer: String!
+  seller: String!
+  signerId: String!
+  receiverId: String!
+  predecessorId: String!
+}
+
+enum EventType @entity {
+  mint
+  transfer
+  payout_mint
+  payout_marketSales
+}
+
+type Event @entity {
+  id: ID!
+  nft: Token!
+  type: EventType!
+  timestamp: String!
+
+  sender: Account!
+  recipient: Account
+  amount: BigInt
+
+  idx: String!
+}
+
+
+
+
+
